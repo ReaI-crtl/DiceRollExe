@@ -66,7 +66,7 @@ class Commands:
             else:
                 for _ in range(attackAmount):
                     acBuffer = []
-                    for _ in range(abs(rollType)):
+                    for _ in range(abs(rollType) + 1):
                         acBuffer.append(random.randint(1, 20) + flatBonus)
                     acRolls.append(acBuffer)
                     if rollType > 0:
