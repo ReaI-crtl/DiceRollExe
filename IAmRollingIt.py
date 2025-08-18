@@ -31,7 +31,7 @@ class Commands:
     def attack(self, args):
         # Data
         attackResults = []
-        acValues = []
+        acValue = 0
         acRolls = []
         acRollsWeighted = []
         rollType = 0
@@ -51,7 +51,7 @@ class Commands:
         armorClassCheck = userInput[0] == "y"
         if armorClassCheck:
             userInput = getInput("Armor Class Value? ")
-            acValues = [int(x) for x in userInput]
+            acValue = int(userInput[0])
 
             userInput = getInput("Flat bonus? ")
             flatBonus = int(userInput[0])
@@ -81,7 +81,8 @@ class Commands:
                 attackResult += rollDice(dice)
             
             if armorClassCheck:
-                if acRollsWeighted[i] < acValues[i]:
+                if acRollsWeighted[i] < acValue:
+                    attackResults.append(0)
                     continue
             
             attackResults.append(attackResult + flatDamageBonus)
@@ -95,7 +96,7 @@ class Commands:
         print("=========================")
         print("Armor Class Check?:", armorClassCheck)
         if armorClassCheck:
-            print("Armor Class Values:", acValues)
+            print("Armor Class Value:", acValue)
             print("Flat Bonus:", flatBonus)
             print("Advantage:", rollType)
             print("AC Rolls:", acRolls)
