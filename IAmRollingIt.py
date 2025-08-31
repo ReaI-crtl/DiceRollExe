@@ -45,8 +45,8 @@ class Attack(cmd.Cmd):
             critThreshold = int(self.data["Crit-Threshold"])
 
             armorClass = int(self.data["Armor-Class"]) if self.data["Armor-Class"] != "None" else "None"
-            attackRollBonus = int(self.data["Armor-Class"])
-            attackRollAdvantage = int(self.data["Armor-Class"])
+            attackRollBonus = int(self.data["Attack-Roll-Bonus"])
+            attackRollAdvantage = int(self.data["Attack-Roll-Advantage"])
 
             # Calculated Data
             attackRawResult = []
