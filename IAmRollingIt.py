@@ -12,8 +12,12 @@ class DiceRoll(cmd.Cmd):
         prompt = 'IAmRollingIt> '
 
         def do_attack(self, args):
-            """Says hello to the given name."""
+            """Enable attack mode."""
             Attack().cmdloop()
+
+        def do_check(self, args):
+            """Enable check mode."""
+            Check().cmdloop()
             
 
         def do_quit(self, args):
@@ -160,6 +164,74 @@ class Attack(cmd.Cmd):
             """Exits attack mode."""
             print("kys")
             return True # Returning True exits the interpreter
+
+class Check(cmd.Cmd):
+    intro = 'Check mode enabled.\n'
+    prompt = 'Check Mode> '
+
+    data = {
+        "Flat-Bonus": "None",
+        "Advantage": "None",
+    }
+
+    def do_roll(self, args):
+        """Roll with the current settings"""
+        # Get data
+        flatBonus = int(self.data["Flat-Bonus"])
+        rollAdvantage = int(self.data["Advantage"])
+
+        # Calculated Data
+        rawRolls = []
+        rollResult = 0
+
+        # Roll for check
+        for _ in range(1 + abs(rollAdvantage)):
+            rawRolls.append(rollDice("1d20") + flatBonus)
+        
+        rollResult = max(rawRolls) if rollAdvantage >= 0 else min(rawRolls)
+
+
+        print("=========================")
+        print("Results of Check Roll:")
+        print("Flat Bonus:", flatBonus)
+        print("Advantage:", rollAdvantage)
+        print("Raw Rolls:", rawRolls)
+        print("=========================")
+        print("Check Result:", rollResult)
+        print("=========================")
+
+
+    def do_show(self, args):
+        """Show the current settings or show specific value of a property"""
+        args = args.split(" ")
+
+        if len(args) == 0 or args[0] == "":
+            for key in list(self.data.keys()):
+                print(f"{key}: {self.data[key]}")
+        else:
+            value = self.data.get(args[0])
+            if value == None:
+                print(f"Property '{args[0]}' is not found")
+                return
+            
+            print(f"{args[0]}: {value}")
+
+    def do_set(self, args):
+        """Set the value of something"""
+        args = args.split(" ")
+        value = self.data.get(args[0])
+
+        if value == None:
+            print("Property not found")
+            return False
+        
+        self.data[args[0]] = args[1]
+        print(f"Property '{args[0]}' is set from {value} to {args[1]}")
+
+    def do_quit(self, args):
+        """Exits check mode."""
+        print("kys")
+        return True # Returning True exits the interpreter
 
 def rollDice(dice):
     buffer = 0
